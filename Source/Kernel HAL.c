@@ -32,12 +32,14 @@
 *******************************************************************************
 ******************************************************************************/
 #include 	"Kernel HAL.h"
+#include 	"stm32f429xx.h"
 
 /******************************************************************************
 *******************************************************************************
     Definitions
 *******************************************************************************
 ******************************************************************************/
+
 #define   UINT32_ALL_ON       0xFFFFFFFF
 #define   POS_07              0x07
 #define   POS_13              0x0D
@@ -63,15 +65,10 @@
 #define   BIT_18              (0x01<<POS_18)
 #define   BIT_19              (0x01<<POS_19)
 #define   BIT_26              (0x01<<POS_26)
-#define   BIT_27              (0x01<<POS_27) 
-#define   BIT_28              (0x01<<POS_28) 
-#define   BIT_29              (0x01<<POS_29) 
+#define   BIT_27              (0x01<<POS_27)
+#define   BIT_28              (0x01<<POS_28)
+#define   BIT_29              (0x01<<POS_29)
 
-//   /
-// \/ pt:
-//    Left up to the student to figure out what values these might be or how
-//    they should be used
-//    
 #define   ONE_MS        1
 #define   ONE_SEC       1000
 #define   TIM6_IRQ      54 // [1] table 62 (STM32F42xxx version)            
@@ -91,6 +88,9 @@
 *******************************************************************************
 ******************************************************************************/
 
+void
+TIM6_DAC_IRQHandler (void);
+
 /******************************************************************************
 *******************************************************************************
     Declarations & Types
@@ -107,15 +107,11 @@
     OSp_InitGPIOG
 		
       The clock to the PORTG module is enabled and the two pins 
-    attached to the red/green LEDs have their digital outputs enabled. 
+    attached to the Red/Green LEDs have their digital outputs enabled. 
 ******************************************************************************/
 void
 OSp_InitGPIOG (void) {
-    //   /
-    // \/ pt 03:
-    //    Import OSp_InitGPIOG code from CA 01. Add code so that the Red and
-	//    Blue LEDs on the Discovery Adapter board can also be used as output.
-        // Enable the system clock for the PORTG peripheral
+    // Enable the system clock for the PORTG peripheral
     // [1] pp.180-1
     RCC->AHB1ENR BON(RCC_AHB1ENR_GPIOGEN);
 
@@ -142,15 +138,6 @@ OSp_InitGPIOG (void) {
     // [1] pp.284-5, [1] table 35
     GPIOG->PUPDR BOFF(GPIO_PUPDR_PUPD3 | GPIO_PUPDR_PUPD2 | GPIO_PUPDR_PUPD9);
 
-    //   /
-    // \/ pt 04:
-    //    Update function OS_SetLEDs.  Tip: add code after the OS_SetLEDs
-    //    call just so you can set a breakpoint there.  Use this breakpoint to 
-    //    verify that all the LEDs turn ON correctly, then remove the 
-    //    extra code.
-    // Ensure the LEDs are ON by default
-    OS_SetLEDs(RED | GREEN | BLUE);
-
 } // end OSp_InitGPIOG
 
 /******************************************************************************
@@ -161,10 +148,6 @@ OSp_InitGPIOG (void) {
 ******************************************************************************/
 void
 OSp_InitGPIOA (void) {
-    //   /
-    // \/ pt 06:
-    //    Import OSp_InitGPIOA code from CA 01. 
-
     // Enable the system clock for the PORTA peripheral
     // [1] pp.180-1
     RCC->AHB1ENR BON(RCC_AHB1ENR_GPIOAEN);
@@ -187,9 +170,6 @@ OSp_InitGPIOA (void) {
     GPIOA->PUPDR BOFF(GPIO_PUPDR_PUPD0);
 
 } // end OSp_InitGPIOA
-
-void
-TIM6_DAC_IRQHandler (void);
 
 /******************************************************************************
     OSp_InitTIM6
@@ -251,8 +231,6 @@ OSp_InitTIM6 (void) {
     // [4] p.208, 214, core_cm4.h in (Proj. Dir.)/CMSIS_4/CMSIS/Include
     NVIC_SetVector(TIM6_IRQ, (uint32_t)TIM6_DAC_IRQHandler);
     NVIC_EnableIRQ(TIM6_IRQ);
-
-
 } // end OSp_InitTIM6
 
 /******************************************************************************
@@ -263,13 +241,6 @@ OSp_InitTIM6 (void) {
 ******************************************************************************/
 void
 OS_SetLEDs (unsigned int LEDs) {
-    //   /
-    // \/ pt 05:
-    //    Rewrite this function so that the input parameter determines which
-    //    of the available LEDs on the Discovery board are turned ON.  This 
-    //    function must never turn an LED OFF.  If zero is passed, nothing
-    //    should happen.
-
     if (LEDs & RED)
     {
         GPIOG->ODR BON(GPIO_ODR_OD2);
@@ -292,13 +263,6 @@ OS_SetLEDs (unsigned int LEDs) {
 ******************************************************************************/
 void
 OS_ClearLEDs (unsigned int LEDs) {
-    //   /
-    // \/ pt 11:
-    //    Rewrite this function so that the input parameter determines which
-    //    of the available LEDs on the Discovery board are turned OFF.  This 
-    //    function must never turn an LED ON.  If zero is passed, nothing
-    //    should happen.
-
     if (LEDs & RED)
     {
         GPIOG->ODR BOFF(GPIO_ODR_OD2);
@@ -320,59 +284,8 @@ OS_ClearLEDs (unsigned int LEDs) {
 ******************************************************************************/
 unsigned int
 OS_GetButton (void) {
-    //   /
-    // \/ pt:
-    //    Import OS_GetButton code from CA 01. 
-
-    // Send back the value of the bit in the input register assigned to the 
-    //    Blue pushbutton on the STM32 board
     return !(GPIOA->IDR & GPIO_IDR_ID0);
-
 } // end OS_GetButton
-
-/******************************************************************************
-    TIM6_DAC_IRQHandler
-
-      The ISR for the Timer 6 Interrupt. 
-******************************************************************************/
-void
-TIM6_DAC_IRQHandler (void) {
-    static unsigned int i = 0x00;
-    static unsigned int j = 0x00;
-    
-    //   /
-    // \/ pt 09:
-    //    Create a loop that clears the Timer 6 interrupt until it is verified 
-    //    as being OFF.  Before writing too much code, put a break point here
-    //    so you can verify that the Timer 6 interrupt goes off and program 
-    //    execution branches to this point.
-    //    [1] p.707
-   while(TIM6->SR & TIM_SR_UIF)
-   {
-      TIM6->SR BOFF(TIM_SR_UIF);
-   }
-
-    //   /
-    // \/ pt 10:
-    //    Write code so that the Red LED is toggling at a rate of 1 second.
-    //    Note that Timer 6 should be generating an interrupt at the rate of
-    //    1 millisecond.  This requires completion of function OS_ClearLEDs.
-
-    if (++i >= ONE_SEC)
-    {
-      i = 0;
-      if (j)
-      {
-        OS_ClearLEDs(RED);
-      }
-      else
-      {
-        OS_SetLEDs(RED);
-      }
-      j = !j;
-    }
-
-} // end TIM6_DAC_IRQHandler
 
 /******************************************************************************
     OS_InitKernelHAL
@@ -381,24 +294,9 @@ TIM6_DAC_IRQHandler (void) {
 ******************************************************************************/
 void
 OS_InitKernelHAL (void) {
-    //   /
-    // \/ pt 02:
-    //    Update functions OSp_InitGPIOG and OSp_InitGPIOA
     OSp_InitGPIOG();
     OSp_InitGPIOA();
-    //   /
-    // \/ pt 07:
-    //    Implement function OSp_InitTIM6. Tip: add dummy code in between the 
-    //    OSp_InitTIM6 call and OS_CRITICAL_END so that you can place a 
-    //    breakpoint there (best to add an infinite loop). Then, at the 
-    //    breakpoint, check register TIM6_CNT to verify that the 
-    //    timer is running.
     OSp_InitTIM6();
-
-    //   /
-    // \/ pt 08:
-    //    Implement macro OS_CRITICAL_END and function TIM6_DAC_IRQHandler.    
-    OS_CRITICAL_END;
 
 } // end OS_InitKernelHAL
 

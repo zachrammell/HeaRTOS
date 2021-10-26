@@ -1,3 +1,17 @@
+/******************************************************************************
+*******************************************************************************
+  ECE 270 Fall 2017
+
+  main.c
+	
+  Christopher Theriault
+  Coding Assignment #:4
+
+  Copyright DigiPen (USA) Corporation
+        All Rights Reserved
+	
+*******************************************************************************
+******************************************************************************/
 
 /******************************************************************************
 *******************************************************************************
@@ -21,9 +35,53 @@
 *******************************************************************************
 ******************************************************************************/
 
-#include <stdio.h>      // Note:not used, but left in as a reminder
-#include <stdlib.h>     //    these libraries are available for use
-#include "Kernel HAL.h"
+#include "Kernel.h"
+
+#define   ONE_SECOND          0x00081B32
+
+/******************************************************************************
+*******************************************************************************
+    Helper Functions
+*******************************************************************************
+******************************************************************************/
+
+void
+TaskGreen (void) {
+    while (0x01) {
+        if (OS_GetButton()) {
+            OS_ClearLEDs(GREEN | BLUE);
+        } // end if
+        else {
+            OS_SetLEDs(GREEN);
+        } // end else
+    } // end while
+
+} // end TaskGreen
+
+void
+TaskRed (void) {
+    static unsigned int i = 0x00;
+    static unsigned int j = 0x00;
+
+    while (0x01) {
+        if (j >= ONE_SECOND) {
+            if (i != 0x00) {
+                i = 0x00;
+                OS_ClearLEDs(RED | BLUE);
+            } // end if
+            else {
+                i = 0x01;
+                OS_SetLEDs(RED);
+            } // end else
+        
+            j = 0x00;
+        } // end if
+        else {
+            ++j;
+        } // end else
+    } // end while
+
+} // end TaskRed
 
 /******************************************************************************
 *
@@ -32,30 +90,18 @@
 *  Function description
 *   Application entry point.
 ******************************************************************************/
+
 void 
 main(void) {
-    unsigned int i;
+    OS_InitKernel();
+    OS_CreateTask(&TaskGreen);
+    OS_CreateTask(&TaskRed);
+    OS_Start();
 
-    //   /
-    // \/ pt 01:
-    //    Complete implementation of function OS_InitKernelHAL.
-    OS_InitKernelHAL();
+    while (0x01) {
+        ;
+    } // end while
 
-    do {
-        ++i;
-    //   /
-    // \/ pt 12:
-    //    When OS_InitKernelHAL executes correctly, uncomment out these
-    //    function calls and allow the program to run.  The Red LED should 
-    //    flash at a 1-second interval while the Green & Blue LEDs stay ON 
-	//    unless the Blue pushbutton is depressed.
-        if (OS_GetButton()) {
-            OS_ClearLEDs(GREEN | BLUE);
-        } // end if
-        else {
-            OS_SetLEDs(GREEN | BLUE);
-        } // end else
-    } while (0x01);
 } // end main
 
 // EOF    main.c

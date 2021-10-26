@@ -45,7 +45,7 @@
  </TraceWindow>
  <Watch1>
   <Watches active="1" update="Each Second">
-   <Watchpoint expression="TIM6->CNT" name="TIM6->CNT" radix="16" linenumber="0" filename=""/>
+   <Watchpoint numelements="0" expression="TIM6->CNT" evalMode="0" name="TIM6->CNT" radix="16" linenumber="0" filename="../HeaRTOS" list=""/>
   </Watches>
  </Watch1>
  <Watch2>
@@ -58,11 +58,11 @@
   <Watches active="0" update="Never"/>
  </Watch4>
  <Files>
-  <SessionOpenFile windowGroup="DockEditLeft" x="13" y="41" useTextEdit="1" openedFrom="" useBinaryEdit="0" left="0" path="Source/main.c" selected="0" top="27" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="10" y="250" useTextEdit="1" openedFrom="/home/zach/Documents/SEGGER Embedded Studio for ARM Projects/HeaRTOS/Source/main.c" useBinaryEdit="0" left="0" path="Source/Kernel HAL.c" selected="1" top="233" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="12" y="1073" useTextEdit="1" openedFrom="/home/zach/Documents/SEGGER Embedded Studio for ARM Projects/HeaRTOS/Source/Kernel HAL.c" useBinaryEdit="0" left="0" path="STM32F4xx/CMSIS/Device/Include/stm32f429xx.h" selected="0" top="1054" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="43" y="1616" useTextEdit="1" openedFrom="/home/zach/Documents/SEGGER Embedded Studio for ARM Projects/HeaRTOS/Source/Kernel HAL.c" useBinaryEdit="0" left="0" path="CMSIS_5/CMSIS/Core/Include/core_cm4.h" selected="0" top="1596" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="45" y="51" useTextEdit="1" openedFrom="/home/zach/Documents/SEGGER Embedded Studio for ARM Projects/HeaRTOS/Source/Kernel HAL.c" useBinaryEdit="0" left="0" path="Source/Kernel HAL.h" selected="0" top="30" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="41" useTextEdit="1" useBinaryEdit="0" left="0" path="Source/main.c" selected="0" top="27" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="250" useTextEdit="1" useBinaryEdit="0" left="0" path="Source/Kernel HAL.c" selected="1" top="233" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="1073" useTextEdit="1" useBinaryEdit="0" left="0" path="STM32F4xx/CMSIS/Device/Include/stm32f429xx.h" selected="0" top="1054" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="1616" useTextEdit="1" useBinaryEdit="0" left="0" path="CMSIS_5/CMSIS/Core/Include/core_cm4.h" selected="0" top="1596" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="51" useTextEdit="1" useBinaryEdit="0" left="0" path="Source/Kernel HAL.h" selected="0" top="30" codecName="Default"/>
  </Files>
- <ARMCrossStudioWindow activeProject="HeaRTOS" fileDialogDefaultFilter="*.c" autoConnectTarget="J-Link" buildConfiguration="Debug" sessionSettings="" debugSearchFileMap="" fileDialogInitialDirectory="" debugSearchPath="" autoConnectCapabilities="3711"/>
+ <ARMCrossStudioWindow activeProject="HeaRTOS" fileDialogDefaultFilter="*.c" autoConnectTarget="J-Link" buildConfiguration="Debug" debugSearchFileMap="" fileDialogInitialDirectory="" debugSearchPath="" autoConnectCapabilities="3199"/>
 </session>

@@ -21,16 +21,24 @@
 *******************************************************************************
 ******************************************************************************/
 
-#ifndef		__KERNEL_HAL__H__
-#define		__KERNEL_HAL__H__
-
-#include "Kernel HAL_asm.h"
+#ifndef		__KERNEL__H__
+#define		__KERNEL__H__
 
 /******************************************************************************
 *******************************************************************************
     Includes
 *******************************************************************************
 ******************************************************************************/
+#include 	"Kernel HAL.h"
+
+/******************************************************************************
+*******************************************************************************
+    Definitions
+*******************************************************************************
+******************************************************************************/
+#define   OS_STACK_SIZE       0x40
+#define   OS_MAX_TASKS        0x04
+#define   OS_STACK_MARKER     0xDEADBEEF
 
 /******************************************************************************
 *******************************************************************************
@@ -39,56 +47,32 @@
 ******************************************************************************/
 
 /******************************************************************************
-*******************************************************************************
-    Declarations & Types
-*******************************************************************************
-******************************************************************************/
-
-//  [4] p.58, core_cmFunc.h in (Proj. Dir.)/CMSIS_4/CMSIS/Include
-#define   OS_CRITICAL_BEGIN   __disable_irq() // This needs to disable global interrupts
-#define   OS_CRITICAL_END     __enable_irq() // This needs to enable global interrupts
-// The RED LED on the Discovery Adapter Board
-#define   RED (1 << 0)                
-// The GREED LED on the Discovery Adapter Board
-#define   GREEN (1 << 1)
-// The BLUE LED on the Discovery Adapter Board
-#define   BLUE (1 << 2)                
+    OS_InitKernel
+		
+      Prepares the Kernel for use, but does not start any services.  No OS_
+    function should be called until after this one has executed.
+******************************************************************************/    
+void    
+OS_InitKernel(void);
 
 /******************************************************************************
-    OS_SetLEDs
+    OS_CreateTask
 		
-      Parameter is the bitwise OR of all the colors that should be set
-    to ON.  This does not turn any LEDs OFF (requires OS_ClearLEDs).
+      Takes the assigned function pointer and uses it to create a kernel task
+    that is ready for execution.
 ******************************************************************************/
 void
-OS_SetLEDs (unsigned int);
+OS_CreateTask(void (*)(void));
 
 /******************************************************************************
-    OS_ClearLEDs
+    OS_Start
 		
-      Parameter is the bitwise OR of all the colors that should be set
-    to OFF.  This does not turn any LEDs ON (requires OS_SetLEDs).
+      Begins kernel services and starts execution of the highest priority task.
 ******************************************************************************/
-void
-OS_ClearLEDs (unsigned int);
+extern void
+OS_Start(void);
 
-/******************************************************************************
-    OS_GetButton
-		
-      Returns nonzero if the button is pushed, otherwise returns zero. 
-******************************************************************************/
-unsigned int
-OS_GetButton (void);
-
-/******************************************************************************
-    OS_InitKernelHAL
-		
-      Prepares the system hardware for use.
-******************************************************************************/
-void
-OS_InitKernelHAL (void);
-
-#endif	//	__KERNEL_HAL__H__
+#endif	//	__KERNEL__H__
 
 // EOF    Kernel HAL.h
 // Note: Some IDEs generate warnings if a file doesn't end in whitespace,
