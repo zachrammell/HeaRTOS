@@ -9,7 +9,7 @@
   <FrameBufferWindow bufferHeight="-1" addressSpace="" addressText="" bufferWidth="-1"/>
  </FrameBufferWindow>
  <Memory1>
-  <MemoryWindow addressSpace="" dataSize="1" autoEvaluate="0" viewMode="0" addressOrder="0" columnsText="" refreshPeriod="0" name="HeaRTOS" radix="16" sizeText="" addressText="TIM6->CNT"/>
+  <MemoryWindow addressSpace="" dataSize="1" autoEvaluate="0" viewMode="0" addressOrder="0" columnsText="" refreshPeriod="0" name="HeaRTOS" radix="16" sizeText="" addressText="0x8000200"/>
  </Memory1>
  <Memory2>
   <MemoryWindow addressSpace="" dataSize="1" autoEvaluate="0" viewMode="0" addressOrder="0" columnsText="" refreshPeriod="0" name="HeaRTOS" radix="16" sizeText="" addressText=""/>
@@ -45,7 +45,7 @@
  </TraceWindow>
  <Watch1>
   <Watches active="1" update="Each Second">
-   <Watchpoint numelements="0" expression="TIM6->CNT" evalMode="0" name="TIM6->CNT" radix="16" linenumber="0" filename="../HeaRTOS" list=""/>
+   <Watchpoint expression="TIM6->CNT" name="TIM6->CNT" radix="16" linenumber="0" filename="../HeaRTOS"/>
   </Watches>
  </Watch1>
  <Watch2>
@@ -58,11 +58,14 @@
   <Watches active="0" update="Never"/>
  </Watch4>
  <Files>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="41" useTextEdit="1" useBinaryEdit="0" left="0" path="Source/main.c" selected="0" top="27" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="250" useTextEdit="1" useBinaryEdit="0" left="0" path="Source/Kernel HAL.c" selected="1" top="233" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="1073" useTextEdit="1" useBinaryEdit="0" left="0" path="STM32F4xx/CMSIS/Device/Include/stm32f429xx.h" selected="0" top="1054" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="1616" useTextEdit="1" useBinaryEdit="0" left="0" path="CMSIS_5/CMSIS/Core/Include/core_cm4.h" selected="0" top="1596" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="51" useTextEdit="1" useBinaryEdit="0" left="0" path="Source/Kernel HAL.h" selected="0" top="30" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="94" useTextEdit="1" openedFrom="" useBinaryEdit="0" left="0" path="Source/main.c" selected="0" top="73" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="277" useTextEdit="1" openedFrom="" useBinaryEdit="0" left="0" path="Source/Kernel HAL.c" selected="0" top="230" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="1073" useTextEdit="1" openedFrom="" useBinaryEdit="0" left="0" path="STM32F4xx/CMSIS/Device/Include/stm32f429xx.h" selected="0" top="1054" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="1616" useTextEdit="1" openedFrom="" useBinaryEdit="0" left="0" path="CMSIS_5/CMSIS/Core/Include/core_cm4.h" selected="0" top="1596" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="38" y="50" useTextEdit="1" openedFrom="" useBinaryEdit="0" left="0" path="Source/Kernel HAL.h" selected="1" top="30" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="40" y="88" useTextEdit="1" openedFrom="" useBinaryEdit="0" left="0" path="Source/Kernel HAL_asm.S" selected="0" top="63" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="200" useTextEdit="1" openedFrom="" useBinaryEdit="0" left="0" path="Source/Kernel.c" selected="0" top="180" codecName=""/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="0" useTextEdit="1" openedFrom="" useBinaryEdit="0" left="0" path="Source/Kernel HAL_asm.h" selected="0" top="0" codecName="Default"/>
  </Files>
- <ARMCrossStudioWindow activeProject="HeaRTOS" fileDialogDefaultFilter="*.c" autoConnectTarget="J-Link" buildConfiguration="Debug" debugSearchFileMap="" fileDialogInitialDirectory="" debugSearchPath="" autoConnectCapabilities="3199"/>
+ <ARMCrossStudioWindow activeProject="HeaRTOS" fileDialogDefaultFilter="*" autoConnectTarget="J-Link" buildConfiguration="Debug" sessionSettings="" debugSearchFileMap="" fileDialogInitialDirectory="/home/zach/Documents/SEGGER Embedded Studio for ARM Projects/HeaRTOS/Source" debugSearchPath="" autoConnectCapabilities="3711"/>
 </session>

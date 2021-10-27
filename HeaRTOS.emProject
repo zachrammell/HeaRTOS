@@ -55,6 +55,7 @@
       <file file_name="Source/Kernel.h" />
       <file file_name="Source/Kernel HAL.h" />
       <file file_name="Source/Kernel HAL_asm.S" />
+      <file file_name="Source/Kernel HAL_asm.h" />
     </folder>
     <folder Name="System Files">
       <file file_name="SEGGER_THUMB_Startup.s" />

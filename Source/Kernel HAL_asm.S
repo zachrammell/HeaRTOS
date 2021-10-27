@@ -15,6 +15,8 @@
   .global OS_Start                  // Required to expose function to .c files
   .global TIM6_DAC_IRQHandler
   .extern OS_TaskRUNNING            // Defined in Kernel.c
+  .extern OS_TaskNEW
+  .extern OSp_ScheduleTask
   .extern OS_SetLEDs
   .extern OS_ClearLEDs
 
@@ -50,7 +52,7 @@ OS_Start:
     CPSIE I                 // Enable interrupts at processor level
     BX LR                   // start first thread
 
-	.bss
+  .bss
 
   .align 2
 microsecondsElapsed: .word 0
@@ -62,7 +64,7 @@ redLedEnabled: .word 0
   .thumb_func
 TIM6_DAC_IRQHandler:
   CPSID I
-  PUSH {R4-R7, IP, LR}
+  PUSH {R4-R11}
   LDR R4, =0x40001010 // load address of timer 6 SR
   LDR R5, [R4]
 .TIM6_DAC_IRQHandler_ClearInterrupt:
@@ -72,31 +74,37 @@ TIM6_DAC_IRQHandler:
   TST R5, #1
   BNE .TIM6_DAC_IRQHandler_ClearInterrupt
   
-  LDR R6, =microsecondsElapsed// R6 := address(microsecondsElapsed)
-  LDR R5, [R6]                // R5 := deref(R6)
-  ADD R5, R5, #1              // R5 += 1
-  CMP R5, #1000               // if (R5 < 1000) 
-  BCS .TIM6_DAC_IRQHandler_MillisecondPassed
-  STR R5, [R6]                // deref(R6) = R5
-  B .TIM6_DAC_IRQHandler_End  // return
+  LDR R0, =OS_TaskRUNNING
+  LDR R1, [R0]
+  STR SP, [R1]
+  PUSH {R0, LR}
+  BL OSp_ScheduleTask
+  POP {R0, LR}
+  LDR R1, [R0]
+  LDR SP, [R1]
 
-.TIM6_DAC_IRQHandler_MillisecondPassed:
-  LDR R5, [R6, #4]      // R5 := deref(address(redLedEnabled))
-  MOV R7, #0            // R7 = 0
-  MOV R0, #1            // R0 := RED
-  CMP R7, R5
-  ITEE EQ
-  MOVEQ R4, #1          // if (!R5) R4 = 1
-  MOVNE R4, #0          // if (R5)  R4 = 0
-  BLNE OS_SetLEDs       // if (R5)  OS_SetLEDs(R0)
-  CMP R7, R5
-  IT EQ
-  BLEQ OS_ClearLEDs     // if (!R5) OS_ClearLEDs(R0)
-  STR R4, [R6, #4]      // deref(address(redLedEnabled)) = R4
-  STR R7, [R6]          // deref(address(microsecondsElapsed)) = R7
+  LDR R0, =OS_TaskRUNNING // R0: ptr(ptr(TCB)) = &OS_TaskRunning
+  LDR R2, [R0]            // R2: ptr(TCB) = *R0
+  // OS_TaskRUNNING→taskState = READY;
+  MOV R1, #OS_READY       // R1: word = OS_READY
+  STR R1, [R2, #8]        // R2->taskState = R1
+  // OS_TaskRUNNING→sp = sp;
+  STR SP, [R2, #0]        // R2->sp = SP
+  // OS_TaskRUNNING = OS_TaskNEW;
+  LDR R1, =OS_TaskNEW     // R1: ptr(ptr(TCB)) = &OS_TaskNEW
+  LDR R3, [R1]            // R3: ptr(TCB) = *R1
+  STR R3, [R0]            // *R0 = R3
+  LDR R2, [R0]            // R2: ptr(TCB) = *R0
+  // OS_TaskRUNNING→taskState = RUNNING
+  MOV R1, #OS_RUNNING     // R1: word = OS_RUNNING
+  STR R1, [R2, #8]        // R2->taskState = R1
+  // sp = OS_TaskRUNNING→sp;
+  LDR SP, [R2, #0]        // SP = R2->sp
+
 .TIM6_DAC_IRQHandler_End:
   CPSIE I
-  POP {R4-R7, IP, PC}                 // return
+  POP {R4-R11}                 // return
+  BX LR
 
  //EOF    Kernel HAL_asm.S
  //Note: Some IDEs generate warnings if a file doesn't end in whitespace,
